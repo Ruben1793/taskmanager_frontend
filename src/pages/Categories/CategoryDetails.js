@@ -2,22 +2,55 @@ import React, {useEffect, useState} from "react";
 import {Formik} from "formik";
 import {Grid, TextField, Typography, Paper, Button, Box} from "@mui/material";
 import * as yup from "yup";
-import {Link, useNavigate} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import useRequestResource from "../../hooks/useRequestResource";
+import ColorPicker from "../../components/ColorPicker";
+
+const validationSchema = yup.object({
+    name: yup.string().required('Name is required').max(100, "Max length is 100"),
+    color: yup.string().required("Color is required")
+});
 
 export default function CategoryDetails() {
-  const {addResource} = useRequestResource({
-      endpoint: "categories"
+  const {addResource, resource, getResource, updateResource} = useRequestResource({
+      endpoint: "categories", resourceLabel: "Category"
   });
 
-  const [initialValues, setIinitialValues] = useState({
+  const [initialValues, setInitialValues] = useState({
     name: "",
     color: ""
   });
+
   const navigate = useNavigate();
+  const {id} = useParams();
+
+  useEffect(() => {
+      if (id) {
+          getResource(id);
+      }
+  }, [getResource, id]);
+
+  useEffect(() => {
+        if (resource) {
+            setInitialValues({
+                name: resource.name,
+                color: `#${resource.color}`
+            });
+        }
+  }, [resource]);
 
   const handleSubmit = (values) => {
-        addResource(values, () => {
+      const formattedValues = {
+          name: values.name,
+          color: values.color.substring(1)
+      }
+      if (id){
+          updateResource(id, formattedValues, () =>{
+              navigate("/categories");
+          });
+          return;
+      }
+      addResource(formattedValues, () => {
         navigate("/categories");
       });
   }
@@ -29,9 +62,10 @@ export default function CategoryDetails() {
         padding: (theme) => theme.spacing(2,4,3)
       }}>
         <Typography variant={"h6"} mb={4}>
-          Create Category
+            {id ? "Edit Category": "Create Category"}
         </Typography>
-        <Formik onSubmit={handleSubmit} initialValues={initialValues}>
+        <Formik onSubmit={handleSubmit} initialValues={initialValues}
+                enableReinitialize validationSchema={validationSchema}>
           {(formik) => {
             return (
                 <form onSubmit={formik.handleSubmit}>
@@ -45,13 +79,16 @@ export default function CategoryDetails() {
                         error={formik.touched.name && Boolean(formik.errors.name)}
                         helperText={formik.touched.name && formik.errors.name}
                       />
-                      <TextField
-                          fullWidth
-                          id={"color"}
-                          label={"Color"}
-                          {...formik.getFieldProps("color")}
-                          error={formik.touched.color && Boolean(formik.errors.color)}
-                          helperText={formik.touched.color && formik.errors.color}
+                    </Grid>
+                    <Grid item xs={12}>
+                      <ColorPicker
+                        id={"color"}
+                        value={formik.values.color}
+                        onChange={(color) => {
+                            formik.setFieldValue("color", color.hex)
+                        }}
+                        error={formik.touched.color && Boolean(formik.errors.color)}
+                        helperText={formik.touched.color && formik.errors.color}
                       />
                     </Grid>
                     <Grid item>

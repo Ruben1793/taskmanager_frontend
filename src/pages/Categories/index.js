@@ -1,9 +1,13 @@
-import React, {useEffect} from "react";
-import {Button, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, IconButton, Paper} from "@mui/material";
+import React, {useEffect, useState} from "react";
+import {
+    Button, Box, Table, TableCell, TableContainer, TableHead, TableRow, IconButton, Paper,
+    DialogTitle, DialogActions, Dialog
+} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit"
 import DeleteIcon from "@mui/icons-material/Delete" ;
-import {BrowserRouter as Router, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import useRequestResource from "src/hooks/useRequestResource";
+import ColorBox from "../../components/ColorBox";
 
 /*const results = [
         {
@@ -19,12 +23,41 @@ import useRequestResource from "src/hooks/useRequestResource";
     ];
 */
 export default function Categories(){
-    const {getResourceList, resourceList} = useRequestResource({endpoint: "categories"});
+    const {getResourceList, resourceList, deleteResource} =
+        useRequestResource({endpoint: "categories", resourceLabel: "Category" });
+
+    const [open, setOpen] = useState(false);
+    const [idToDelete, setIdToDelete] = useState(null);
+
     useEffect(() => {
         getResourceList();
-    }, [getResourceList()])
+    }, [getResourceList]);
+
+    const handleConfirmDelete = (id) => {
+        setIdToDelete(id);
+        setOpen(true);
+    }
+
+    const handleDeleteClose = () => {
+        setOpen(false)
+    }
+
+    const handleDelete = () => {
+        setOpen(false);
+        deleteResource(idToDelete);
+    }
+
     return (
         <div>
+            <Dialog open={open} onClose={handleDeleteClose}>
+                <DialogTitle>
+                    Are you use you want to delete this category?
+                </DialogTitle>
+                <DialogActions>
+                    <Button onClick={handleDelete}> Yes </Button>
+                    <Button onClick={handleDeleteClose}> No </Button>
+                </DialogActions>
+            </Dialog>
             <Box sx={{
                 display: "flex",
                 justifyContent: "flex-end",
@@ -52,14 +85,14 @@ export default function Categories(){
                                 {r.name}
                             </TableCell>
                             <TableCell align={"left"}>
-                                {r.color}
+                                <ColorBox color={`#${r.color}`} />
                             </TableCell>
                             <TableCell align={"right"}>
                                 <Box sx={{display: "flex"}} justifyContent={"flex-end"}>
                                     <Link to={`/categories/edit/${r.id}`} key={"category-edit"}>
                                         <IconButton size={"large"}><EditIcon/></IconButton>
                                     </Link>
-                                    <IconButton size={"large"} onClick={null}>
+                                    <IconButton size={"large"} onClick={() => handleConfirmDelete(r.id)}>
                                         <DeleteIcon/>
                                     </IconButton>
                                 </Box>
