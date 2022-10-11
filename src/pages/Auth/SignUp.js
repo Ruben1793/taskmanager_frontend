@@ -8,8 +8,9 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import formik, {Form, Formik} from "formik";
+import { Formik } from "formik";
 import * as yup from "yup";
+import userRequestAuth from "../../hooks/useRequestAuth";
 
 const validationSchema = yup.object({
     username: yup.string().required("Username is required!"),
@@ -18,13 +19,10 @@ const validationSchema = yup.object({
 });
 
 export default function SignUp() {
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
+    const { register, loading } = userRequestAuth();
+
+    const handleSubmit = (values) => {
+        register(values);
     };
 
     return (
@@ -60,7 +58,8 @@ export default function SignUp() {
                                             id="username"
                                             label="Username"
                                             name="username"
-                                            {...formik.getFieldProps("username") && Boolean(formik.errors.username)}
+                                            {...formik.getFieldProps("username")}
+                                            error={Boolean(formik.errors.username)}
                                             helperText={formik.touched.username && formik.errors.username}
                                         />
                                     </Grid>
@@ -72,7 +71,8 @@ export default function SignUp() {
                                             label="Email Address"
                                             name="email"
                                             autoComplete="email"
-                                            {...formik.getFieldProps("email") && Boolean(formik.errors.email)}
+                                            {...formik.getFieldProps("email")}
+                                            error={Boolean(formik.errors.email)}
                                             helperText={formik.touched.email && formik.errors.email}
                                         />
                                     </Grid>
@@ -85,7 +85,8 @@ export default function SignUp() {
                                             type="password"
                                             id="password"
                                             autoComplete="new-password"
-                                            {...formik.getFieldProps("password") && Boolean(formik.errors.password)}
+                                            {...formik.getFieldProps("password")}
+                                            error={Boolean(formik.errors.password)}
                                             helperText={formik.touched.password && formik.errors.password}
                                         />
                                     </Grid>
