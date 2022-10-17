@@ -1,4 +1,4 @@
-import {useCallback, useState, useContext} from "react";
+import {useCallback, useState} from "react";
 import axios from "axios";
 import {useSnackbar} from "notistack";
 import formatHttpApiError from "../helpers/formatHttpApiError";
@@ -32,7 +32,22 @@ export default function userRequestAuth () {
             }).catch(handleRequestError)
     }, [enqueueSnackbar, setLoading, handleRequestError]);
 
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const login = useCallback(({username, password}, successCallback) => {
+        setLoading(true);
+        axios.post("/api/auth/token/login/", {username, password})
+            .then((res) => {
+                const {auth_token} = res.data;
+                localStorage.setItem("authToken", auth_token);
+                setLoading(false);
+                if (successCallback){
+                    successCallback();
+                }
+            }).catch(handleRequestError)
+
+    }, [handleRequestError, setLoading]);
+
     return {
-        register, loading, error
+        register, login, loading, error
     }
 }

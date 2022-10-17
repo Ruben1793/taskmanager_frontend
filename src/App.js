@@ -8,6 +8,7 @@ import CategoryDetails from "./pages/Categories/CategoryDetails";
 import {SnackbarProvider} from "notistack";
 import LoadingOverlayResource from "./components/LoadingOverlayResource";
 import SignUp from "./pages/Auth/SignUp";
+import SignIn from "./pages/Auth/SignIn";
 
 export default function App() {
     return <div>
@@ -25,6 +26,7 @@ export default function App() {
                             <Route path="/categories/create"  element={<CategoryDetails/>} />
                             <Route path="/categories/edit/:id" element={<CategoryDetails/>} />
                             <Route path="/auth/signup" element={<SignUp/>} />
+                            <Route path="/auth/signin" element={<SignIn/>} />
                         </Routes>
                     </Box>
                 </Router>
