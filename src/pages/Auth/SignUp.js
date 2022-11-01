@@ -8,6 +8,7 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import {LoadingButton} from "@mui/lab";
 import { Formik } from "formik";
 import * as yup from "yup";
 import userRequestAuth from "../../hooks/useRequestAuth";
@@ -91,14 +92,15 @@ export default function SignUp() {
                                         />
                                     </Grid>
                                 </Grid>
-                                <Button
+                                <LoadingButton
                                     type="submit"
                                     fullWidth
                                     variant="contained"
+                                    loading={loading}
                                     sx={{ mt: 3, mb: 2 }}
                                 >
                                     Sign Up
-                                </Button>
+                                </LoadingButton>
                                 <Grid container justifyContent="flex-end">
                                     <Grid item>
                                         <Link href="#" variant="body2">

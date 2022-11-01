@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
+import {LoadingButton} from "@mui/lab";
 import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
@@ -20,7 +21,7 @@ const validationSchema = yup.object({
 
 export default function SignIn() {
 
-    const {login} = userRequestAuth();
+    const {login, loading} = userRequestAuth();
     const navigate = useNavigate();
 
     const handleSubmit = (values) => {
@@ -77,14 +78,15 @@ export default function SignIn() {
                                     error={formik.touched.password && Boolean(formik.errors.password)}
                                     helperText={formik.touched.password && formik.errors.password}
                                 />
-                                <Button
+                                <LoadingButton
                                     type="submit"
                                     fullWidth
+                                    loading={loading}
                                     variant="contained"
                                     sx={{ mt: 3, mb: 2 }}
                                 >
                                     Sign In
-                                </Button>
+                                </LoadingButton>
                                 <Grid container>
                                     <Grid item xs>
                                         <Link href="#" variant="body2">
