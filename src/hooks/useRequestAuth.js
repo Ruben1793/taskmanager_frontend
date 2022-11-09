@@ -1,7 +1,8 @@
-import {useCallback, useState} from "react";
+import {useCallback, useContext, useState} from "react";
 import axios from "axios";
 import {useSnackbar} from "notistack";
 import formatHttpApiError from "../helpers/formatHttpApiError";
+import AuthContextProvider, {AuthContext} from "../context/AuthContextProvider";
 
 export default function userRequestAuth () {
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -10,6 +11,8 @@ export default function userRequestAuth () {
     const {enqueueSnackbar} = useSnackbar();
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [error, setError] = useState(null);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const { setIsAuthenticated } = useContext(AuthContext);
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const handleRequestError = useCallback((err) => {
@@ -40,12 +43,13 @@ export default function userRequestAuth () {
                 const {auth_token} = res.data;
                 localStorage.setItem("authToken", auth_token);
                 setLoading(false);
+                setIsAuthenticated(true);
                 if (successCallback){
                     successCallback();
                 }
             }).catch(handleRequestError)
 
-    }, [handleRequestError, setLoading]);
+    }, [handleRequestError, setLoading, setIsAuthenticated]);
 
     return {
         register, login, loading, error
