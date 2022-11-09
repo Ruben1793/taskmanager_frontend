@@ -11,6 +11,7 @@ import SignUp from "./pages/Auth/SignUp";
 import SignIn from "./pages/Auth/SignIn";
 import AuthContextProvider from "./context/AuthContextProvider";
 import RequireAuth from "./components/RequireAuth";
+import RequireNotAuth from "./components/RequireNotAuth";
 
 export default function App() {
     return <div>
@@ -30,8 +31,10 @@ export default function App() {
                                     <Route path="/categories/create"  element={<CategoryDetails/>} />
                                     <Route path="/categories/edit/:id" element={<CategoryDetails/>} />
                                 </Route>
-                                <Route path="/auth/signup" element={<SignUp/>} />
-                                <Route path="/auth/signin" element={<SignIn/>} />
+                                <Route element={<RequireNotAuth/>}>
+                                    <Route path="/auth/signup" element={<SignUp/>} />
+                                    <Route path="/auth/signin" element={<SignIn/>} />
+                                </Route>
                             </Routes>
                         </Box>
                     </Router>
