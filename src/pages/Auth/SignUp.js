@@ -11,7 +11,7 @@ import Container from '@mui/material/Container';
 import {LoadingButton} from "@mui/lab";
 import { Formik } from "formik";
 import * as yup from "yup";
-import userRequestAuth from "../../hooks/useRequestAuth";
+import useRequestAuth from "../../hooks/useRequestAuth";
 
 const validationSchema = yup.object({
     username: yup.string().required("Username is required!"),
@@ -20,7 +20,7 @@ const validationSchema = yup.object({
 });
 
 export default function SignUp() {
-    const { register, loading } = userRequestAuth();
+    const { register, loading } = useRequestAuth();
 
     const handleSubmit = (values) => {
         register(values);

@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {Formik} from "formik";
 import * as yup from "yup";
-import userRequestAuth from "../../hooks/useRequestAuth";
+import useRequestAuth from "../../hooks/useRequestAuth";
 import {useNavigate} from "react-router-dom";
 
 const validationSchema = yup.object({
@@ -21,7 +21,7 @@ const validationSchema = yup.object({
 
 export default function SignIn() {
 
-    const {login, loading} = userRequestAuth();
+    const {login, loading} = useRequestAuth();
     const navigate = useNavigate();
 
     const handleSubmit = (values) => {

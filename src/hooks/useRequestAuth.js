@@ -3,14 +3,21 @@ import axios from "axios";
 import {useSnackbar} from "notistack";
 import formatHttpApiError from "../helpers/formatHttpApiError";
 import AuthContextProvider, {AuthContext} from "../context/AuthContextProvider";
+import getCommonOptions from "../helpers/axios/getCommonOptions";
 
-export default function userRequestAuth () {
+export default function useRequestAuth () {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [loading, setLoading] = useState(false);
+
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [logoutPending, setLogoutPending] = useState(false);
+
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const {enqueueSnackbar} = useSnackbar();
+
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [error, setError] = useState(null);
+
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const { setIsAuthenticated } = useContext(AuthContext);
 
@@ -51,7 +58,22 @@ export default function userRequestAuth () {
 
     }, [handleRequestError, setLoading, setIsAuthenticated]);
 
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const logout = useCallback(() => {
+        setLogoutPending(true);
+        axios.post("/api/auth/token/logout/", null, getCommonOptions())
+            .then(() => {
+                localStorage.removeItem("authToken");
+                setLogoutPending(false);
+                setIsAuthenticated(false);
+            })
+            .catch((err) => {
+               setLogoutPending(false);
+               handleRequestError(err);
+            });
+    }, [handleRequestError, setLogoutPending, setIsAuthenticated]);
+
     return {
-        register, login, loading, error
+        register, login, logout, loading, logoutPending, error
     }
 }
