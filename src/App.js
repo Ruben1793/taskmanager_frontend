@@ -12,35 +12,36 @@ import SignIn from "./pages/Auth/SignIn";
 import AuthContextProvider from "./context/AuthContextProvider";
 import RequireAuth from "./components/RequireAuth";
 import RequireNotAuth from "./components/RequireNotAuth";
+import BaseLayout from "./components/BaseLayout"
 
 export default function App() {
     return <div>
         <CssBaseline/>
-        <LoadingOverlayResource>
-            <AuthContextProvider>
-                <SnackbarProvider>
-                    <Router>
-                        <Box sx={{ bgcolor: (theme) =>
-                                theme.palette.background.default,
-                            minHeight: "100vh",
-                            width: "100%"
-                        }}>
-                            <Routes>
-                                <Route element={<RequireAuth/>}>
+        <AuthContextProvider>
+            <SnackbarProvider>
+                <Router>
+                    <Box sx={{ bgcolor: (theme) =>
+                            theme.palette.background.default,
+                        minHeight: "100vh",
+                        width: "100%"
+                    }}>
+                        <Routes>
+                            <Route element={<RequireAuth/>}>
+                                <Route element={<BaseLayout />}>
                                     <Route path="/categories" element={<Categories/>} />
                                     <Route path="/categories/create"  element={<CategoryDetails/>} />
                                     <Route path="/categories/edit/:id" element={<CategoryDetails/>} />
                                 </Route>
-                                <Route element={<RequireNotAuth/>}>
-                                    <Route path="/auth/signup" element={<SignUp/>} />
-                                    <Route path="/auth/signin" element={<SignIn/>} />
-                                </Route>
-                            </Routes>
-                        </Box>
-                    </Router>
-                </SnackbarProvider>
-            </AuthContextProvider>
-        </LoadingOverlayResource>
+                            </Route>
+                            <Route element={<RequireNotAuth/>}>
+                                <Route path="/auth/signup" element={<SignUp/>} />
+                                <Route path="/auth/signin" element={<SignIn/>} />
+                            </Route>
+                        </Routes>
+                    </Box>
+                </Router>
+            </SnackbarProvider>
+        </AuthContextProvider>
     </div>
 }
 
