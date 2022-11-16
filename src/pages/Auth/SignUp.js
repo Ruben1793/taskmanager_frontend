@@ -11,7 +11,7 @@ import {LoadingButton} from "@mui/lab";
 import { Formik } from "formik";
 import * as yup from "yup";
 import useRequestAuth from "../../hooks/useRequestAuth";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const validationSchema = yup.object({
     username: yup.string().required("Username is required!"),
@@ -21,9 +21,12 @@ const validationSchema = yup.object({
 
 export default function SignUp() {
     const { register, loading } = useRequestAuth();
+    const navigate = useNavigate();
 
     const handleSubmit = (values) => {
-        register(values);
+        register(values, () => {
+            navigate("/auth/signin");
+        });
     };
 
     return (

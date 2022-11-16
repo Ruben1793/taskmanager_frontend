@@ -19,7 +19,7 @@ export default function useRequestAuth () {
     const [error, setError] = useState(null);
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const { setIsAuthenticated } = useContext(AuthContext);
+    const { setIsAuthenticated, setUser } = useContext(AuthContext);
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const handleRequestError = useCallback((err) => {
@@ -43,7 +43,7 @@ export default function useRequestAuth () {
     }, [enqueueSnackbar, setLoading, handleRequestError]);
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const login = useCallback(({username, password}, successCallback) => {
+    const login = useCallback(({username, password}) => {
         setLoading(true);
         axios.post("/api/auth/token/login/", {username, password})
             .then((res) => {
@@ -51,11 +51,7 @@ export default function useRequestAuth () {
                 localStorage.setItem("authToken", auth_token);
                 setLoading(false);
                 setIsAuthenticated(true);
-                if (successCallback){
-                    successCallback();
-                }
             }).catch(handleRequestError)
-
     }, [handleRequestError, setLoading, setIsAuthenticated]);
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -65,13 +61,14 @@ export default function useRequestAuth () {
             .then(() => {
                 localStorage.removeItem("authToken");
                 setLogoutPending(false);
+                setUser(null);
                 setIsAuthenticated(false);
             })
             .catch((err) => {
                setLogoutPending(false);
                handleRequestError(err);
             });
-    }, [handleRequestError, setLogoutPending, setIsAuthenticated]);
+    }, [handleRequestError, setLogoutPending, setIsAuthenticated, setUser]);
 
     return {
         register, login, logout, loading, logoutPending, error

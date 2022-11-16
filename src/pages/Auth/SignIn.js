@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import {LoadingButton} from "@mui/lab";
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
@@ -24,9 +23,7 @@ export default function SignIn() {
     const navigate = useNavigate();
 
     const handleSubmit = (values) => {
-        login(values, () => {
-            navigate("/categories");
-        });
+        login(values);
     };
 
     return (
