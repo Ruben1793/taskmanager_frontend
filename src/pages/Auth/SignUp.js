@@ -2,7 +2,6 @@ import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -12,6 +11,7 @@ import {LoadingButton} from "@mui/lab";
 import { Formik } from "formik";
 import * as yup from "yup";
 import useRequestAuth from "../../hooks/useRequestAuth";
+import { Link } from "react-router-dom";
 
 const validationSchema = yup.object({
     username: yup.string().required("Username is required!"),
@@ -103,7 +103,7 @@ export default function SignUp() {
                                 </LoadingButton>
                                 <Grid container justifyContent="flex-end">
                                     <Grid item>
-                                        <Link href="#" variant="body2">
+                                        <Link to={"/auth/signin"} key={"signin"}>
                                             Already have an account? Sign in
                                         </Link>
                                     </Grid>
