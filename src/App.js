@@ -12,7 +12,10 @@ import SignIn from "./pages/Auth/SignIn";
 import AuthContextProvider from "./context/AuthContextProvider";
 import RequireAuth from "./components/RequireAuth";
 import RequireNotAuth from "./components/RequireNotAuth";
-import BaseLayout from "./components/BaseLayout"
+import BaseLayout from "./components/BaseLayout";
+import Tasks from "./pages/Tasks";
+import TaskDetails from "./pages/Tasks/TaskDetails";
+import Dashboard from "./pages/Dashboard";
 
 export default function App() {
     return <div>
@@ -31,6 +34,10 @@ export default function App() {
                                     <Route path="/categories" element={<Categories/>} />
                                     <Route path="/categories/create"  element={<CategoryDetails/>} />
                                     <Route path="/categories/edit/:id" element={<CategoryDetails/>} />
+                                    <Route path="/tasks" element={<Tasks/>} />
+                                    <Route path="/tasks/create" element={<TaskDetails/>} />
+                                    <Route path="/tasks/edit/:id" element={<TaskDetails/>} />
+                                    <Route path="/" element={<Dashboard/>} />
                                 </Route>
                             </Route>
                             <Route element={<RequireNotAuth/>}>
