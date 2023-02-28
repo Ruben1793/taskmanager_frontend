@@ -29,7 +29,11 @@ export default function useRequestResource ({endpoint, resourceLabel}) {
         axios.get(`/api/${endpoint}/`, getCommonOptions())
             .then((res) => {
                 setLoading(false);
-                setResourceList({results: res.data})
+                if (res.data.results){
+                    setResourceList(res.data)
+                } else {
+                    setResourceList({results: res.data})
+                }
             }).catch(handleRequestResourceError)
     }, [endpoint, handleRequestResourceError, setLoading]);
 
