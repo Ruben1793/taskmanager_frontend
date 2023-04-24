@@ -13,7 +13,7 @@ import {
 import PropTypes from "prop-types";
 import { AccountCircle } from "@mui/icons-material";
 import MenuIcon from "@mui/icons-material/Menu";
-import React, {useState} from "react";
+import React from "react";
 import {AuthContext} from "../../context/AuthContextProvider";
 import useRequestAuth from "../../hooks/useRequestAuth";
 

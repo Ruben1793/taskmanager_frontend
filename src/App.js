@@ -6,7 +6,6 @@ import {Box} from "@mui/material";
 import Categories from "./pages/Categories"
 import CategoryDetails from "./pages/Categories/CategoryDetails";
 import {SnackbarProvider} from "notistack";
-import LoadingOverlayResource from "./components/LoadingOverlayResource";
 import SignUp from "./pages/Auth/SignUp";
 import SignIn from "./pages/Auth/SignIn";
 import AuthContextProvider from "./context/AuthContextProvider";
@@ -23,8 +22,8 @@ export default function App() {
         <AuthContextProvider>
             <SnackbarProvider>
                 <Router>
-                    <Box sx={{ bgcolor: (theme) =>
-                            theme.palette.background.default,
+                    <Box sx={{
+                        bgcolor: (theme) => theme.palette.background.default,
                         minHeight: "100vh",
                         width: "100%"
                     }}>
